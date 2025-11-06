@@ -1,0 +1,7 @@
+{
+  "name": "CaleucheNetwork",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
