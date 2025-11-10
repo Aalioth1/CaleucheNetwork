@@ -1,0 +1,98 @@
+/* -----------------------------
+   Styles: Signup Page (signup.page.scss)
+   ----------------------------- */
+
+ion-content {
+  --overflow: auto;
+  height: 100%;
+}
+
+ion-title {
+  font-size: 24px;
+  font-family: Cinzel, serif;
+  text-align: center;
+}
+
+ion-item {
+  border-radius: 1rem;
+  margin: 0 20px 0 20px;
+  margin-bottom: 1rem;
+}
+
+ion-note {
+  color: var(--color-danger);
+  font-size: 0.75rem;
+  margin: 0.3rem 0 0.8rem;
+  display: block;
+  min-height: 1.2rem; 
+}
+
+ion-button {
+  display: block;
+  margin: 1rem auto 0 auto;
+  width: 60%;
+  max-width: 230px;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.2s ease;
+  color: white !important;
+}
+
+ion-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.backToLogin:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(18, 18, 18, 0.8);
+  color: #fff;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding-bottom: 2rem;
+}
+
+.profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  .avatar-placeholder,
+  .avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--ion-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--ion-color-medium);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .avatar-preview {
+    object-fit: cover;
+  }
+}
+

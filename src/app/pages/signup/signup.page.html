@@ -1,0 +1,92 @@
+<!--
+-----------------------------
+ Template: Signup Page (signup.page.html)
+-----------------------------
+-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goToLogin()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registro de usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="form-wrapper">
+    <form [formGroup]="form" (ngSubmit)="register()">
+
+      <!-- Imagen -->
+      <div class="profile-upload">
+        <img *ngIf="previewImage; else placeholder" [src]="previewImage" alt="Avatar" class="avatar-preview" />
+        <ng-template #placeholder>
+          <label for="imageInput" class="avatar-placeholder">+</label>
+        </ng-template>
+        <input id="imageInput" type="file" accept="image/*" (change)="onImageSelected($event)" />
+      </div>
+
+      <!-- Username -->
+      <ion-item>
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input formControlName="username"></ion-input>
+        <ion-note *ngIf="f['username'].touched && f['username'].invalid" color="danger">
+          Solo letras, números, guiones y guiones bajos (mínimo 6)
+        </ion-note>
+      </ion-item>
+
+      <!-- Email -->
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+        <ion-note *ngIf="f['email'].touched && f['email'].invalid" color="danger">
+          Ingresa un correo válido con @ y .
+        </ion-note>
+      </ion-item>
+
+      <!-- Password -->
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-note *ngIf="f['password'].touched && f['password'].invalid" color="danger">
+          Mínimo 12 caracteres, con mayúscula, minúscula, número y símbolo.
+        </ion-note>
+      </ion-item>
+
+      <!-- Gender -->
+      <ion-item>
+        <ion-label>Género</ion-label>
+        <ion-select formControlName="gender" placeholder="Selecciona" interface="popover">
+          <ion-select-option value="masculino">Masculino</ion-select-option>
+          <ion-select-option value="femenino">Femenino</ion-select-option>
+          <ion-select-option value="otro">Otro</ion-select-option>
+        </ion-select>
+        <ion-note *ngIf="f['gender'].touched && f['gender'].invalid" color="danger">
+          Selecciona un género *
+        </ion-note>
+      </ion-item>
+
+      <!-- Edad -->
+      <ion-item>
+        <ion-label position="floating">Edad</ion-label>
+        <ion-input type="number" formControlName="age"></ion-input>
+        <ion-note *ngIf="f['age'].touched && f['age'].invalid" color="danger">
+          Edad mínima 13 años *
+        </ion-note>
+      </ion-item>
+
+      <!-- Botones -->
+      <ion-button expand="block" class="ion-margin-top" type="submit" [disabled]="form.invalid">
+        Registrar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <ion-toolbar>
+    <p class="ion-padding-start">Caleuche Network 2025 ©</p>
+  </ion-toolbar>
+</ion-footer>

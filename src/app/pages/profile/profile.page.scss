@@ -1,0 +1,241 @@
+/* -----------------------------
+   Styles: Profile Page (profile.page.scss)
+   ----------------------------- */
+
+/* Contenedor principal */
+ion-content {
+  --overflow: auto;
+  height: 100%;
+}
+
+/* Título del header */
+ion-title {
+  font-family: Cinzel, serif;
+  font-size: 24px;
+}
+
+/* Botones del header */
+ion-button {
+  color: white;
+}
+
+/* Botón volver home en header */
+ion-buttons[slot="start"] ion-button {
+  color: white;
+}
+
+/* Botón de editar/guardar */
+.editar-guardar {
+  font-family: Cinzel, serif;
+  font-size: clamp(12px, 2.5vw, 14px);
+  color: white;
+}
+
+/* Botón guardar cambios */
+.guardar-cambios {
+  font-family: Cinzel, serif;
+  font-size: clamp(11px, 2vw, 13px);
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Ícono de ojo para mostrar contraseña */
+ion-item ion-button {
+  color: white;
+}
+
+ion-item ion-button ion-icon {
+  color: white;
+  font-size: 20px;
+}
+
+/* Labels con más espacio */
+ion-item ion-label {
+  min-width: 120px;
+  padding-right: 1rem;
+  color: white;
+}
+
+/* Footer fijo con fondo translúcido */
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(18, 18, 18, 0.8);
+  color: #fff;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* Card gris translúcido con blur */
+ion-card {
+  margin: 20px;
+  border-radius: 1rem;
+  font-family: Cinzel, serif;
+  background: rgba(128, 128, 128, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 80px; /* Dejar espacio para el footer */
+}
+
+/* Título de la card */
+ion-card-title {
+  font-family: Cinzel, serif;
+  font-size: clamp(18px, 5vw, 24px);
+  color: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Item de formulario */
+ion-item {
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  --background: transparent;
+}
+
+/* Labels responsivos */
+ion-label {
+  font-size: clamp(14px, 3vw, 16px);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Inputs responsivos */
+ion-input {
+  font-size: clamp(13px, 3vw, 15px);
+}
+
+/* Inputs y selects deshabilitados */
+ion-input[readonly],
+ion-select[disabled] {
+  opacity: 0.7;
+  cursor: default;
+  color: #fff;
+  pointer-events: none; /* evita que se pueda escribir o abrir select */
+}
+
+/* Sección de imagen de perfil */
+.profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.profile-upload input[type="file"] {
+  display: none;
+}
+
+.avatar-container {
+  position: relative;
+  width: fit-content;
+}
+
+.avatar-placeholder,
+.avatar-preview {
+  width: clamp(100px, 25vw, 150px);
+  height: clamp(100px, 25vw, 150px);
+  border-radius: 50%;
+  background: var(--ion-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: var(--ion-color-medium);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar-placeholder:hover,
+.avatar-preview:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.avatar-preview {
+  object-fit: cover;
+}
+
+/* Overlay para editar imagen */
+.edit-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(12px, 3vw, 14px);
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  height: clamp(100px, 25vw, 150px);
+}
+
+.avatar-container:hover .edit-overlay {
+  opacity: 1;
+}
+
+/* Botón de editar/guardar */
+.editar-guardar {
+  font-family: Cinzel, serif;
+  font-size: clamp(12px, 2.5vw, 14px);
+}
+
+/* Botón guardar cambios */
+.guardar-cambios {
+  font-family: Cinzel, serif;
+  font-size: clamp(11px, 2vw, 13px);
+  --color: #4caf50;
+  font-weight: bold;
+}
+
+/* Ícono de ojo para mostrar contraseña */
+ion-item ion-button ion-icon {
+  color: white;
+  font-size: 20px;
+}
+
+/* Labels con más espacio */
+ion-item ion-label {
+  min-width: 120px;
+  padding-right: 1rem;
+}
+
+/* Media query para pantallas muy pequeñas */
+@media (max-width: 320px) {
+  ion-card {
+    margin: 10px;
+  }
+
+  .profile-upload {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  ion-item {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Media query para pantallas grandes */
+@media (min-width: 768px) {
+  ion-card {
+    max-width: 600px;
+    margin: 40px auto;
+  }
+}

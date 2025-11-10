@@ -1,0 +1,99 @@
+<!--
+-----------------------------
+ Template: Home Page (home.page.html)
+-----------------------------
+-->
+
+<ion-header [translucent]="true">
+  <ion-toolbar class="toolbar-blur">
+    <ion-title>Caleuche Network</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToProfile()">
+        <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="header-container">
+    <h1>Caleuche Network</h1>
+    <h2>Donde lo desconocido sale a flote</h2>
+  </div>
+  <!-- Composer: crear nueva publicación -->
+  <section class="composer-section">
+    <ion-card class="composer-card">
+      <ion-card-header>
+        <ion-card-title>Publicar en el foro</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Título</ion-label>
+          <ion-input [(ngModel)]="newTitle" placeholder="Título breve"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Contenido</ion-label>
+          <ion-textarea [(ngModel)]="newContent" placeholder="Cuenta tu experiencia..." rows="4"></ion-textarea>
+        </ion-item>
+        <div class="composer-actions">
+          <ion-button expand="block" (click)="publish()" [disabled]="!newTitle || !newContent">Publicar</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </section>
+
+  <!-- Feed: nuevos misterios -->
+  <section class="feed-section">
+    <h1 class="feed-title">Descubre los nuevos misterios</h1>
+
+    <ion-list>
+      <ion-item *ngFor="let item of items" lines="none" class="fade-in-item post-item">
+        <ion-avatar slot="start">
+          <img [src]="item.image" alt="Avatar" />
+        </ion-avatar>
+
+        <ion-label class="post-body">
+          <h3>{{ item.title }}</h3>
+          <p class="post-content">{{ item.content }}</p>
+          <small class="post-meta">{{ item.date | date:'short' }}</small>
+
+          <!-- comments area -->
+          <div *ngIf="commentsVisible[item.id]" class="comments-area">
+            <div *ngFor="let c of item.comments">
+              <p class="comment-text">{{ c.text }}</p>
+              <small class="comment-meta">{{ c.date | date:'short' }}</small>
+            </div>
+            <ion-item>
+              <ion-input [(ngModel)]="commentInput[item.id]" placeholder="Escribe un comentario..."></ion-input>
+              <ion-button (click)="addComment(item.id)">Enviar</ion-button>
+            </ion-item>
+          </div>
+        </ion-label>
+
+        <ion-buttons slot="end" class="post-actions">
+          <ion-button fill="clear" (click)="vote(item.id, 1)">
+            <ion-icon slot="icon-only" name="chevron-up"></ion-icon>
+          </ion-button>
+          <div class="vote-count">{{ item.votes || 0 }}</div>
+          <ion-button fill="clear" (click)="vote(item.id, -1)">
+            <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="toggleComments(item.id)">
+            <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más contenido...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </section>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <ion-toolbar>
+    <p class="ion-padding-start">Caleuche Network 2025 ©</p>
+  </ion-toolbar>
+</ion-footer>

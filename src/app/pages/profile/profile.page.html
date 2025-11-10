@@ -1,0 +1,103 @@
+<!--
+-----------------------------
+ Template: Profile Page (profile.page.html)
+-----------------------------
+-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button *ngIf="!isEditing" (click)="goToHome()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Tu perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="editar-guardar" (click)="toggleEdit()">
+        {{ isEditing ? 'Editar' : 'Editar' }}
+      </ion-button>
+      <ion-button *ngIf="isEditing" class="guardar-cambios" (click)="toggleEdit()">
+        Guardar cambios
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  </ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bienvenido {{ username }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Imagen de perfil -->
+      <div class="profile-upload">
+        <div class="avatar-container">
+          <img *ngIf="previewImage; else placeholder" [src]="previewImage" alt="Avatar" class="avatar-preview" />
+          <ng-template #placeholder>
+            <label for="imageInput" class="avatar-placeholder">+</label>
+          </ng-template>
+          <label *ngIf="isEditing" for="imageInput" class="edit-overlay">Cambiar</label>
+        </div>
+        <input
+          id="imageInput"
+          type="file"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          [hidden]="true"
+        />
+      </div>
+
+      <!-- Usuario -->
+      <ion-item>
+        <ion-label>Usuario:</ion-label>
+        <ion-input [(ngModel)]="username" [readonly]="!isEditing"></ion-input>
+      </ion-item>
+
+      <!-- Correo -->
+      <ion-item>
+        <ion-label>Correo electrónico:</ion-label>
+        <ion-input [(ngModel)]="email" [readonly]="!isEditing"></ion-input>
+      </ion-item>
+
+      <!-- Contraseña -->
+      <ion-item>
+        <ion-label>Contraseña:</ion-label>
+        <ion-input 
+          [type]="isEditing && showPassword ? 'text' : 'password'" 
+          [(ngModel)]="password" 
+          [readonly]="!isEditing">
+        </ion-input>
+        <ion-button 
+          *ngIf="isEditing" 
+          fill="clear" 
+          slot="end" 
+          (click)="togglePasswordVisibility()">
+          <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Género -->
+      <ion-item>
+        <ion-label>Género:</ion-label>
+        <ion-select [(ngModel)]="gender" [disabled]="!isEditing">
+          <ion-select-option value="masculino">Masculino</ion-select-option>
+          <ion-select-option value="femenino">Femenino</ion-select-option>
+          <ion-select-option value="otro">Otro</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Edad -->
+      <ion-item>
+        <ion-label>Edad:</ion-label>
+        <ion-input type="number" [(ngModel)]="age" [readonly]="!isEditing"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <ion-toolbar>
+    <p class="ion-padding-start">Caleuche Network 2025 ©</p>
+  </ion-toolbar>
+</ion-footer>

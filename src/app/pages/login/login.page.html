@@ -1,0 +1,59 @@
+<!--
+-----------------------------
+ Template: Login Page (login.page.html)
+-----------------------------
+-->
+
+<ion-header>
+  <div class="header-container">
+    <h1>Home</h1>
+    <h2>Donde lo desconocido sale a flote</h2>
+  </div>
+</ion-header>
+
+<app-loader-overlay #loader [defaultDuration]="2000"></app-loader-overlay>
+
+<ion-content class="login-background ion-padding" [fullscreen]="true">
+
+  <ng-lottie
+    [options]="lottieOptions"
+    [styles]="{ display: 'block', margin: '80px auto 0', width: '220px', height: '220px' }">
+  </ng-lottie>
+
+
+  <div class="form-container">
+    <a class="login-label">Inicie sesión</a>
+    <form [formGroup]="form">
+      <ion-item>
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input formControlName="username" autocomplete="username"></ion-input>
+        <ion-note *ngIf="form.get('username')?.touched && form.get('username')?.invalid" color="danger">
+          Solo letras, números, guiones y guiones bajos (mínimo 6)
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input formControlName="password" type="password" autocomplete="current-password"></ion-input>
+        <ion-note *ngIf="form.get('password')?.touched && form.get('password')?.invalid" color="danger">
+          Mínimo 12 caracteres, con mayúscula, minúscula, número y símbolo.
+        </ion-note>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" (click)="onSubmit()" [disabled]="form.invalid">
+        Ingresar
+      </ion-button>
+    </form>
+  </div>
+
+  <div class="register-text">
+    <span>¿No tienes cuenta?</span>
+    <a class="register-link" (click)="goToSignup()">Regístrate aquí</a>
+  </div>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <ion-toolbar>
+    <p class="ion-padding-start">Caleuche Network 2025 ©</p>
+  </ion-toolbar>
+</ion-footer>
