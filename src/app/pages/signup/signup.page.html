@@ -1,7 +1,7 @@
 <!--
------------------------------
- Template: Signup Page (signup.page.html)
------------------------------
+--------
+Página de registro
+--------
 -->
 
 <ion-header>
@@ -19,16 +19,25 @@
   <div class="form-wrapper">
     <form [formGroup]="form" (ngSubmit)="register()">
 
-      <!-- Imagen -->
+      <!-- Avatar del usuario -->
       <div class="profile-upload">
+        <div class="upload-top">Sube una imagen</div>
+
         <img *ngIf="previewImage; else placeholder" [src]="previewImage" alt="Avatar" class="avatar-preview" />
         <ng-template #placeholder>
           <label for="imageInput" class="avatar-placeholder">+</label>
         </ng-template>
         <input id="imageInput" type="file" accept="image/*" (change)="onImageSelected($event)" />
+
+        <div class="upload-bottom">
+          <div class="upload-text">o tómate una selfie</div>
+          <div class="camera-row">
+            <button type="button" class="camera-button" (click)="openCamera($event)">Abrir cámara</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Username -->
+      <!-- Campo usuario -->
       <ion-item>
         <ion-label position="floating">Usuario</ion-label>
         <ion-input formControlName="username"></ion-input>
@@ -37,7 +46,7 @@
         </ion-note>
       </ion-item>
 
-      <!-- Email -->
+      <!-- Campo correo -->
       <ion-item>
         <ion-label position="floating">Correo electrónico</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
@@ -46,7 +55,7 @@
         </ion-note>
       </ion-item>
 
-      <!-- Password -->
+      <!-- Campo contraseña -->
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
@@ -55,7 +64,7 @@
         </ion-note>
       </ion-item>
 
-      <!-- Gender -->
+      <!-- Campo género -->
       <ion-item>
         <ion-label>Género</ion-label>
         <ion-select formControlName="gender" placeholder="Selecciona" interface="popover">
@@ -68,16 +77,18 @@
         </ion-note>
       </ion-item>
 
-      <!-- Edad -->
-      <ion-item>
-        <ion-label position="floating">Edad</ion-label>
-        <ion-input type="number" formControlName="age"></ion-input>
+      <!-- Campo edad -->
+      <ion-item class="age-item">
+        <ion-label>Edad:</ion-label>
+        <ion-select formControlName="age" placeholder="Selecciona tu edad">
+          <ion-select-option *ngFor="let a of ages" [value]="a">{{ a }}</ion-select-option>
+        </ion-select>
         <ion-note *ngIf="f['age'].touched && f['age'].invalid" color="danger">
           Edad mínima 13 años *
         </ion-note>
       </ion-item>
 
-      <!-- Botones -->
+      <!-- Envío del formulario -->
       <ion-button expand="block" class="ion-margin-top" type="submit" [disabled]="form.invalid">
         Registrar
       </ion-button>

@@ -6,7 +6,7 @@
   import { LoaderOverlayComponent } from "../../shared/loader-overlay/loader-overlay.component";
   import { LottieComponent } from "ngx-lottie";
   import { AnimationOptions } from "ngx-lottie";
-  import { AuthService } from "../../services/auth.service";
+  import { SqliteServices } from "../../services/sqlite-services";
 
   @Component({
     selector: "app-login",
@@ -24,56 +24,63 @@
   export class LoginPage {
     @ViewChild("loader") loader?: LoaderOverlayComponent;
 
-    // -----------------------------
-    //  Inyección de dependencias
-    // -----------------------------
+    /**
+    --------
+    Inyección de dependencias
+    --------
+    */
     private fb = inject(FormBuilder);
-    private authService = inject(AuthService);
+    private authService = inject(SqliteServices);
     private router = inject(Router);
     private toastCtrl = inject(ToastController);
 
-
-    // -----------------------------
-    //  Formulario y validaciones
-    // -----------------------------
+    /**
+    --------
+    Formulario y validaciones
+    --------
+    */
     form: FormGroup = this.fb.group({
       username: ["", [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9_-]+$/)]],
       password: ["", [Validators.required, Validators.minLength(12), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+.,;:]).{12,}$/)]],
     });
 
-    // -----------------------------
-    //  Lottie animation options
-    // -----------------------------
+    /**
+    --------
+    Animación Lottie
+    --------
+    */
     lottieOptions: AnimationOptions = {
       path: "/assets/treasure-map.json",
       autoplay: true,
       loop: true,
     };
 
-  // -----------------------------
-  //  Envío y flujo de autenticación
-  // -----------------------------
+  /**
+  --------
+  Autenticación
+  --------
+  */
   async onSubmit() {
       if (this.form.invalid) {
         return this.showToast("Por favor, rellene todos los campos correctamente.", "danger");
       }
 
-      // Mostrar loader por 2 segundos
+      /** Muestra overlay por 2 segundos */
       this.loader?.showfor(2000);
-      
+
       const {username, password} = this.form.value;
-      const auth = this.authService.login(username, password);
+      const auth = await this.authService.login(username, password);
 
       if (auth === true) {
-        // Esperar a que el loader termine antes de mostrar toast y navegar
+        /** Espera fin del loader antes de navegar */
         setTimeout(() => {
           this.showToast("Inicio de sesión exitoso", "success");
           this.router.navigate(["/home"], { replaceUrl: true });
         }, 2000);
       } else {
-        this.showToast(
-          "Usuario o contraseña incorrectos",
-          "danger"
+        await this.showToast(
+          typeof auth === 'string' ? auth : 'Usuario o contraseña incorrectos',
+          'danger'
         );
       }
     }
@@ -91,9 +98,11 @@
       this.router.navigate(["/signup"], { replaceUrl: true });
     }
 
-    // -----------------------------
-    //  Utilidades (toasts)
-    // -----------------------------
+    /**
+    --------
+    Toasts
+    --------
+    */
     private async showToast(message: string, color: string) {
       const toast = await this.toastCtrl.create({
         message,

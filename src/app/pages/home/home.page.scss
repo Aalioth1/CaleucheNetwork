@@ -2,12 +2,47 @@
    Styles: Home Page (home.page.scss)
    ----------------------------- */
 
+ion-toolbar {
+  position: relative; /* permitir centrar el título de forma absoluta */
+}
+
 ion-title {
   font-family: 'Cinzel', serif;
   font-weight: 700;
-  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 1px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(70%, 420px);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--palette-white);
+  font-size: clamp(20px, 6vw, 34px);
+  line-height: 1;
+  z-index: 2;
+}
+
+/** Botón de Perfil */
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: var(--palette-white);
+  transition: all 0.3s ease;
+
+  span {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  &:hover {
+    color: color-mix(in srgb, var(--palette-white) 85%, var(--palette-blue) 15%);
+  }
 }
 
 ion-item {
@@ -130,6 +165,80 @@ ion-footer {
   margin: 8px 0 72px 0;
 }
 
+/* Side menu styles for home (slide-in from left) */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.36);
+  z-index: 50;
+}
+
+.side-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: min(280px, 78%);
+  background: linear-gradient(180deg, rgba(20,20,28,0.98), rgba(12,12,16,0.98));
+  color: var(--palette-white);
+  transform: translateX(-110%);
+  transition: transform 260ms ease;
+  z-index: 60;
+  padding: 72px 12px 12px 12px; /* leave room for header */
+  display: flex;
+  flex-direction: column;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    li {
+      margin: 8px 0;
+      button {
+        width: 100%;
+        text-align: left;
+        color: var(--palette-white);
+        background: transparent;
+        border: none;
+        font-size: 1rem;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 8px;
+        transition: background 200ms;
+
+        ion-icon {
+          font-size: 20px;
+        }
+
+        &:active {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      &.logout-item {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: auto;
+        margin-bottom: 0;
+
+        button {
+          color: #ff6b6b;
+
+          &:active {
+            background: rgba(255, 107, 107, 0.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
 .feed-title {
   margin: 24px 16px;
   color: #f6f3ff;
@@ -138,6 +247,53 @@ ion-footer {
   text-align: center;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   padding: 16px 0;
+}
+
+.scroll-arrow-container {
+  display: flex;
+  justify-content: center;
+  margin: 6px 0 8px 0; /* menos espacio */
+}
+
+.scroll-arrow {
+  background: transparent;
+  border: none; /* sin círculo alrededor */
+  border-radius: 0;
+  width: 64px; /* agrandado */
+  height: 48px; /* agrandado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  padding: 0;
+  color: var(--palette-white);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.04);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  svg {
+    width: 36px;
+    height: 24px;
+    fill: var(--palette-white);
+    display: block;
+  }
+
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .post-item {
@@ -181,6 +337,17 @@ ion-footer {
   --padding-start: 6px;
   --padding-end: 6px;
   color: var(--color-secondary, #9A4DFF);
+  transition: all 0.3s ease;
+
+  &.voted-up {
+    color: #4ade80;
+    --background: rgba(74, 222, 128, 0.2);
+  }
+
+  &.voted-down {
+    color: #ef4444;
+    --background: rgba(239, 68, 68, 0.2);
+  }
 }
 
 .vote-count {
@@ -190,14 +357,45 @@ ion-footer {
 
 .comments-area {
   margin-top: 8px;
-  background: rgba(255,255,255,0.015);
-  padding: 8px;
-  border-radius: 6px;
+  background: var(--color-surface, rgba(20,22,26,0.6));
+  padding: 10px 10px 8px 10px;
+  border-radius: 8px;
 }
 
 .comment-text {
   margin: 0;
   color: #e8e8e8;
+}
+
+/* Composer de comentario: textarea más grande y botón compacto */
+.comment-composer {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  padding: 6px 0 0 0;
+}
+
+.comment-composer ion-textarea {
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  min-height: 44px;
+  max-height: 120px;
+  width: 100%;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  color: var(--palette-white);
+}
+
+.comment-composer ion-textarea textarea {
+  color: var(--palette-white);
+}
+
+.comment-composer ion-button {
+  flex: 0 0 auto;
+  height: 36px;
+  align-self: center;
 }
 
 .comment-meta {
@@ -221,11 +419,26 @@ ion-footer {
 }
 
 .toolbar-blur ion-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  width: calc(100% - 120px);
+  width: 100%;
+  font-size: 1.3rem; /* un poco más grande */
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--palette-white);
+}
+
+/* Asegurar que el icono del perfil sea blanco */
+.profile-button ion-icon {
+  color: var(--palette-white);
+  font-size: 20px;
+}
+
+.profile-button span {
+  color: var(--palette-white);
+  font-size: 0.98rem;
 }
 
 .header-container {

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { SqliteServices } from '../../services/sqlite-services';
 import { Router } from '@angular/router';
 import {
   FormsModule,
@@ -28,6 +28,14 @@ import {
   IonFooter
 } from '@ionic/angular/standalone';
 
+import {
+  Camera,
+  CameraResultType,
+  CameraSource,
+} from '@capacitor/camera';
+
+import { Preferences } from '@capacitor/preferences';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -50,27 +58,21 @@ import {
     IonSelect,
     IonSelectOption,
     IonNote,
-    IonFooter
+    IonFooter,
   ]
 })
-
 export class SignupPage {
-  // -----------------------------
-  //  Inyección de dependencias
-  // -----------------------------
+
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  private authService = inject(SqliteServices);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
 
-  // -----------------------------
-  //  Estado local
-  // -----------------------------
   previewImage: string | null = null;
+  ages: number[] = Array.from({ length: 108 }, (_, i) => i + 13);
+  
+  private readonly STORAGE_KEY = 'profile_image_signup';
 
-  // -----------------------------
-  //  Formulario y validaciones
-  // -----------------------------
   form: FormGroup = this.fb.group({
     username: [
       '',
@@ -94,30 +96,39 @@ export class SignupPage {
     imageFile: [null]
   });
 
+  async ionViewWillEnter() {
+    await this.loadSavedProfileImage();
+  }
+
+  async loadSavedProfileImage() {
+    try {
+      const result = await Preferences.get({ key: this.STORAGE_KEY });
+      if (result.value) {
+        this.previewImage = result.value;
+      }
+    } catch (error) {
+      console.error('Error loading saved image:', error);
+    }
+  }
+
   async register() {
-    // -----------------------------
-    //  Registro de usuario
-    // -----------------------------
     if (this.form.invalid) {
       await this.showToast('Por favor rellene todos los campos correctamente', 'danger');
       return;
     }
 
     const user = { ...this.form.value, image: this.previewImage || null };
-    const auth = this.authService.register(user as any);
+    const auth = await this.authService.register(user as any);
 
     if (auth === true) {
       await this.showToast('Registro exitoso', 'success');
-      this.router.navigate(['/login'], { replaceUrl: true })
+      this.router.navigate(['/login'], { replaceUrl: true });
     } else if (typeof auth === 'string') {
       await this.showToast(auth, 'danger');
     }
   }
 
   onImageSelected(event: Event) {
-    // -----------------------------
-    //  Gestión de imagen de perfil
-    // -----------------------------
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.form.patchValue({ imageFile: file });
@@ -127,13 +138,44 @@ export class SignupPage {
     }
   }
 
-  // -----------------------------
-  //  Utilidades (toasts)
-  // -----------------------------
+  async openCamera(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    try {
+      const image = await Camera.getPhoto({
+        quality: 80,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera,
+        width: 600,
+        height: 600
+      });
+
+      const base64Image = `data:image/jpeg;base64,${image.base64String}`;
+
+      this.previewImage = base64Image;
+      this.form.patchValue({ imageFile: base64Image });
+
+      // Guardar en storage
+      await Preferences.set({
+        key: this.STORAGE_KEY,
+        value: base64Image
+      });
+
+      await this.showToast('Foto capturada y guardada', 'success');
+
+    } catch (error) {
+      await this.showToast('No se pudo abrir la cámara', 'danger');
+      console.error(error);
+    }
+  }
+
   private async showToast(message: string, color: string) {
-    const toast = await this.toastCtrl.create({ 
-      message, 
-      duration: 2000, 
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
       color,
       position: 'middle',
       cssClass: 'custom-toast',
@@ -155,4 +197,3 @@ export class SignupPage {
     this.router.navigate(['/login'], { replaceUrl: true });
   }
 }
-

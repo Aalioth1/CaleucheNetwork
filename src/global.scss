@@ -1,15 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+@import 'leaflet/dist/leaflet.css';
 
 :root {
-  --ion-background-color: #0B0E11;
-  --ion-text-color: #EAEAEA;
+  /* Paleta: negro, gris blur, blanco y azul */
+  --ion-background-color: #07080A; /* casi negro */
+  --ion-text-color: #F5F7FA; /* blanco suave */
 
-  --color-primary: #5a5a5a;
-  --color-secondary: #9A4DFF;
-  --color-surface: #1A1F24;
-  --color-text-secondary: #B0B3B8;
+  --palette-bg: #07080A;
+  --palette-surface: rgba(20,22,26,0.7); /* blur/overlay */
+  --palette-muted: #9AA0A6; /* gris suave */
+  --palette-white: #F5F7FA;
+  --palette-blue: #2B6FFF; /* azul vibrante */
+
+
+  --color-primary: var(--palette-muted);
+  --color-secondary: var(--palette-blue);
+  --color-surface: var(--palette-surface);
+  --color-text-secondary: #98A0A6;
   --color-danger: #FF5252;
   --color-success: #4CAF50;
+}
+
+
+.age-item {
+  display: flex;
+  align-items: center;
+}
+
+.age-item ion-label {
+  min-width: 120px;
+  padding-right: 1rem;
+  color: var(--palette-white);
+  font-size: clamp(13px, 3vw, 15px);
+}
+
+.age-item ion-select {
+  width: auto;
+  min-width: 120px;
+  font-size: clamp(13px, 3vw, 15px);
+}
+
+.age-item ion-select .select-interface {
 }
 
 [data-theme='light'] {

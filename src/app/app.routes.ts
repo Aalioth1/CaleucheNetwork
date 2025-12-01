@@ -26,6 +26,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/profile/profile.page').then((m) => m.ProfilePage),
   },
   {
+    path: 'lore',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/lore/lore.page').then( m => m.LorePage)
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

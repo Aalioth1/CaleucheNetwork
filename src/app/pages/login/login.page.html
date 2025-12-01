@@ -1,12 +1,12 @@
 <!--
------------------------------
- Template: Login Page (login.page.html)
------------------------------
+--------
+Página de login
+--------
 -->
 
 <ion-header>
   <div class="header-container">
-    <h1>Home</h1>
+    <h1>Caleuche network</h1>
     <h2>Donde lo desconocido sale a flote</h2>
   </div>
 </ion-header>
@@ -15,10 +15,9 @@
 
 <ion-content class="login-background ion-padding" [fullscreen]="true">
 
-  <ng-lottie
-    [options]="lottieOptions"
-    [styles]="{ display: 'block', margin: '80px auto 0', width: '220px', height: '220px' }">
-  </ng-lottie>
+  <div class="lottie-wrapper" aria-hidden="true">
+    <ng-lottie class="lottie-anim" [options]="lottieOptions"></ng-lottie>
+  </div>
 
 
   <div class="form-container">

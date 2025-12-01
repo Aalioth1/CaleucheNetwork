@@ -1,0 +1,75 @@
+<!--
+--------
+Página de Lore: Leyendas y mitos desde Wikipedia (ES)
+--------
+-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="toggleMenu()" color="primary">
+        <ion-icon name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="title-center">Contenido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToProfile()" color="primary">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Menu lateral -->
+<div class="menu-backdrop" (click)="closeMenu()" [class.visible]="menuOpen"></div>
+<div class="side-menu" [class.open]="menuOpen">
+  <ul>
+    <li><button type="button" (click)="goToHome()"><ion-icon name="home"></ion-icon> Inicio</button></li>
+    <li><button type="button" (click)="goToProfile()"><ion-icon name="person"></ion-icon> Perfil</button></li>
+    <li><button type="button" (click)="closeMenu()"><ion-icon name="menu"></ion-icon> Contenido</button></li>
+    <li class="logout-item"><button type="button" (click)="logout()"><ion-icon name="log-out"></ion-icon> Cerrar sesión</button></li>
+  </ul>
+</div>
+
+<ion-content class="ion-padding">
+  <!-- Error state -->
+  <section *ngIf="error && !loading" class="result-area">
+    <ion-card color="danger">
+      <ion-card-header>
+        <ion-card-title>Error</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ error }}
+      </ion-card-content>
+    </ion-card>
+  </section>
+
+  <!-- Content list -->
+  <section *ngIf="contents.length > 0 && !loading" class="contents-area">
+    <ion-card class="content-card" *ngFor="let item of contents">
+      <ion-card-header>
+        <ion-card-title>{{ item.title }}</ion-card-title>
+        <small class="muted">{{ item.description || '' }}</small>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4" class="thumb-col" *ngIf="item.thumbnail?.source">
+              <img [src]="item.thumbnail.source" alt="{{ item.title }}" class="content-thumb" />
+            </ion-col>
+            <ion-col [size]="item.thumbnail?.source ? 8 : 12">
+              <p class="extract">{{ item.extract }}</p>
+              <div class="meta">
+                <small>Fragmento provisto por Wikipedia (ES)</small>
+              </div>
+              <div class="content-actions">
+                <ion-button fill="outline" (click)="openFull(item)">Leer en Wikipedia</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </section>
+
+</ion-content>

@@ -1,15 +1,21 @@
 <!--
------------------------------
- Template: Home Page (home.page.html)
------------------------------
+--------
+Página de inicio
+--------
 -->
 
 <ion-header [translucent]="true">
   <ion-toolbar class="toolbar-blur">
-    <ion-title>Caleuche Network</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="toggleMenu()" class="menu-button" aria-label="Abrir menú">
+        <ion-icon slot="icon-only" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToProfile()">
-        <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+      <ion-button (click)="goToProfile()" class="profile-button">
+        <ion-icon slot="start" name="person"></ion-icon>
+        <span>Perfil</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -20,7 +26,7 @@
     <h1>Caleuche Network</h1>
     <h2>Donde lo desconocido sale a flote</h2>
   </div>
-  <!-- Composer: crear nueva publicación -->
+  <!-- Formulario para publicar -->
   <section class="composer-section">
     <ion-card class="composer-card">
       <ion-card-header>
@@ -42,9 +48,29 @@
     </ion-card>
   </section>
 
-  <!-- Feed: nuevos misterios -->
-  <section class="feed-section">
+  <!-- Listado de publicaciones -->
+  <section class="feed-section" #feedSection>
+    <!-- Side menu (local to home) -->
+    <div class="menu-backdrop" *ngIf="menuOpen" (click)="closeMenu()"></div>
+    <nav class="side-menu" [class.open]="menuOpen" role="navigation" aria-hidden="{{!menuOpen}}">
+      <ul>
+        <li><button ion-button (click)="goToHome(); closeMenu()"><ion-icon name="home"></ion-icon> Inicio</button></li>
+        <li><button ion-button (click)="goToProfile(); closeMenu()"><ion-icon name="person"></ion-icon> Perfil</button></li>
+        <li><button ion-button (click)="goToLore(); closeMenu()"><ion-icon name="menu"></ion-icon> Contenido</button></li>
+        <li class="logout-item"><button ion-button (click)="logout(); closeMenu()"><ion-icon name="log-out"></ion-icon> Cerrar sesión</button></li>
+      </ul>
+    </nav>
     <h1 class="feed-title">Descubre los nuevos misterios</h1>
+    
+    <!-- Flecha para desplazarse -->
+    <div class="scroll-arrow-container">
+      <button class="scroll-arrow" (click)="scrollToFeed()" aria-label="Desplazarse a publicaciones">
+        <!-- Triángulo minimalista -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="12,16 6,8 18,8" />
+        </svg>
+      </button>
+    </div>
 
     <ion-list>
       <ion-item *ngFor="let item of items" lines="none" class="fade-in-item post-item">
@@ -57,25 +83,40 @@
           <p class="post-content">{{ item.content }}</p>
           <small class="post-meta">{{ item.date | date:'short' }}</small>
 
-          <!-- comments area -->
+          <!-- Área de comentarios -->
           <div *ngIf="commentsVisible[item.id]" class="comments-area">
             <div *ngFor="let c of item.comments">
               <p class="comment-text">{{ c.text }}</p>
               <small class="comment-meta">{{ c.date | date:'short' }}</small>
             </div>
-            <ion-item>
-              <ion-input [(ngModel)]="commentInput[item.id]" placeholder="Escribe un comentario..."></ion-input>
-              <ion-button (click)="addComment(item.id)">Enviar</ion-button>
+            <ion-item lines="none" class="comment-composer">
+              <ion-textarea
+                autoGrow="true"
+                rows="2"
+                maxlength="500"
+                [(ngModel)]="commentInput[item.id]"
+                placeholder="Escribe tu comentario aquí..."
+                aria-label="Campo de comentario"
+              ></ion-textarea>
+              <ion-button size="small" fill="solid" (click)="addComment(item.id)">Enviar</ion-button>
             </ion-item>
           </div>
         </ion-label>
 
         <ion-buttons slot="end" class="post-actions">
-          <ion-button fill="clear" (click)="vote(item.id, 1)">
+          <ion-button 
+            fill="clear" 
+            (click)="vote(item.id, 1)"
+            [class.voted-up]="getUserVote(item.id) === 1"
+          >
             <ion-icon slot="icon-only" name="chevron-up"></ion-icon>
           </ion-button>
           <div class="vote-count">{{ item.votes || 0 }}</div>
-          <ion-button fill="clear" (click)="vote(item.id, -1)">
+          <ion-button 
+            fill="clear" 
+            (click)="vote(item.id, -1)"
+            [class.voted-down]="getUserVote(item.id) === -1"
+          >
             <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
           </ion-button>
           <ion-button fill="clear" (click)="toggleComments(item.id)">

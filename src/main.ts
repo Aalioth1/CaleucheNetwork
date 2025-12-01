@@ -7,16 +7,20 @@
 
   import { provideLottieOptions } from 'ngx-lottie';
 
-  // -----------------------------
-  //  Lottie player factory
-  // -----------------------------
+  /**
+  --------
+  Player Lottie
+  --------
+  */
   export function playerFactory() {
     return import('lottie-web');
   }
 
-  // -----------------------------
-  //  Bootstrap y providers
-  // -----------------------------
+  /**
+  --------
+  Bootstrap y providers
+  --------
+  */
   bootstrapApplication(AppComponent, {
     providers: [
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

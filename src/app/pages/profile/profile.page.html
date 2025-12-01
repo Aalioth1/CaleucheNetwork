@@ -1,7 +1,7 @@
 <!--
------------------------------
- Template: Profile Page (profile.page.html)
------------------------------
+--------
+Página de perfil
+--------
 -->
 
 <ion-header>
@@ -30,8 +30,9 @@
     </ion-card-header>
 
     <ion-card-content>
-      <!-- Imagen de perfil -->
+      <!-- Avatar y carga de imagen -->
       <div class="profile-upload">
+        <div class="upload-top" *ngIf="isEditing">Sube una imagen</div>
         <div class="avatar-container">
           <img *ngIf="previewImage; else placeholder" [src]="previewImage" alt="Avatar" class="avatar-preview" />
           <ng-template #placeholder>
@@ -46,6 +47,13 @@
           (change)="onImageSelected($event)"
           [hidden]="true"
         />
+
+        <div class="upload-bottom" *ngIf="isEditing">
+          <div class="upload-text">o tómate una selfie</div>
+          <div class="camera-row">
+            <button type="button" class="camera-button" (click)="openCamera($event)">Abrir cámara</button>
+          </div>
+        </div>
       </div>
 
       <!-- Usuario -->
@@ -88,9 +96,11 @@
       </ion-item>
 
       <!-- Edad -->
-      <ion-item>
+      <ion-item class="age-item">
         <ion-label>Edad:</ion-label>
-        <ion-input type="number" [(ngModel)]="age" [readonly]="!isEditing"></ion-input>
+        <ion-select [(ngModel)]="age" [disabled]="!isEditing" placeholder="Selecciona">
+          <ion-select-option *ngFor="let a of ages" [value]="a">{{ a }}</ion-select-option>
+        </ion-select>
       </ion-item>
     </ion-card-content>
   </ion-card>

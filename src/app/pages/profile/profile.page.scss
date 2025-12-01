@@ -190,6 +190,39 @@ ion-select[disabled] {
   opacity: 1;
 }
 
+/* Upload helper texts and camera button (match signup) */
+.profile-upload .upload-top {
+  color: var(--palette-white);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.profile-upload .upload-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+  color: var(--palette-muted);
+  font-size: 0.95rem;
+}
+
+.profile-upload .camera-button {
+  background: var(--palette-blue);
+  color: var(--palette-white);
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  border: none;
+  box-shadow: 0 6px 18px rgba(43, 111, 255, 0.15);
+}
+
+.profile-upload .camera-button:active {
+  transform: translateY(1px);
+}
+
 /* Botón de editar/guardar */
 .editar-guardar {
   font-family: Cinzel, serif;
