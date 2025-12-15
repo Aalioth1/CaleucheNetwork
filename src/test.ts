@@ -12,3 +12,9 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
 );
+
+// Cargar automáticamente todos los archivos *.spec.ts
+// (Requerido por Karma para descubrir pruebas)
+// Webpack 5: usar webpackContext en import.meta
+const context = (import.meta as any).webpackContext('./', { recursive: true, regExp: /\.spec\.ts$/ });
+context.keys().forEach((key: string) => context(key));

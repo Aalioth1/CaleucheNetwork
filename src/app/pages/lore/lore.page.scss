@@ -94,26 +94,28 @@ ion-header {
 }
 
 .content-card {
-	--background: rgba(88, 86, 214, 0.15);
+	--background: rgba(128, 128, 144, 0.12);
+	backdrop-filter: blur(8px);
 	border-radius: 16px;
-	border: 1px solid rgba(88, 86, 214, 0.3);
+	border: 1px solid rgba(200, 200, 216, 0.15);
 	overflow: hidden;
 
 	ion-card-header {
 		padding: 16px;
-		background: rgba(88, 86, 214, 0.08);
-		border-bottom: 1px solid rgba(88, 86, 214, 0.2);
+		background: rgba(128, 128, 144, 0.08);
+		backdrop-filter: blur(4px);
+		border-bottom: 1px solid rgba(200, 200, 216, 0.1);
 	}
 
 	ion-card-title {
-		color: #fff;
+		color: #1a1a1a;
 		font-size: 18px;
 		font-weight: 600;
 		margin: 0 0 8px 0;
 	}
 
 	small {
-		color: #a8a4c4;
+		color: #3a3a4a;
 		font-size: 12px;
 		display: block;
 	}
@@ -133,7 +135,7 @@ ion-header {
 }
 
 .extract {
-	color: #e0dff7;
+	color: #1a1a1a;
 	line-height: 1.6;
 	margin: 0;
 	font-size: 14px;
@@ -142,7 +144,7 @@ ion-header {
 
 .meta {
 	margin-top: 12px;
-	color: #8c88b4;
+	color: #3a3a4a;
 	font-size: 11px;
 }
 

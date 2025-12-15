@@ -1,2 +1,19 @@
 /build/*
 !/build/.npmkeep
+
+# Signing artifacts (keystore/keys)
+*.jks
+*.keystore
+*.pem
+*.p12
+*.key
+*.asc
+
+# Local signing/config files
+signing.properties
+google-services.json
+
+# Generated outputs (redundant with /build, but explicit for clarity)
+app-release.apk
+app-release-unsigned.apk
+app-release.aab

@@ -313,6 +313,22 @@ ion-footer {
   font-size: 1rem;
 }
 
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.post-username {
+  color: #b8b4c8;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
 .post-content {
   color: #d9d9d9;
   margin-top: 6px;
@@ -320,9 +336,9 @@ ion-footer {
 }
 
 .post-meta {
-  display: block;
-  margin-top: 8px;
+  display: inline;
   color: #b9b9c8;
+  font-size: 0.8rem;
 }
 
 .post-actions {
@@ -484,4 +500,27 @@ ion-footer {
   .post-actions {
     gap: 4px;
   }
+}
+
+/* Empty State - Cuando no hay publicaciones */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state-text {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(16px, 4vw, 20px);
+  color: #b8b4c8;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  max-width: 280px;
+  margin: 0;
+  font-weight: 400;
+  opacity: 0.85;
+  animation: fadeInUp 0.8s ease both;
 }

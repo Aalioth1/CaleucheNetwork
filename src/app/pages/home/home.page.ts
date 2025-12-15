@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { person, chevronUp, chevronDown, chatbubbleOutline, arrowDown, menu, logOut, home } from 'ionicons/icons';
 import { defineCustomElements } from '@ionic/core/loader';
+import { SqliteServices } from '../../services/sqlite-services';
 
 addIcons({ person, chevronUp, chevronDown, chatbubbleOutline, arrowDown, menu, logOut, home });
 defineCustomElements();
@@ -38,14 +39,17 @@ export class HomePage {
   */
   private router = inject(Router);
   private zone = inject(NgZone);
+  private authService = inject(SqliteServices);
   @ViewChild('feedSection', { read: ElementRef }) feedSection!: ElementRef;
   menuOpen = false;
-  items: { id: number; image: string; title: string; content: string; subtitle?: string; date?: string; votes?: number; userVotes?: { [userId: string]: number }; comments?: { text: string; date: string }[] }[] = [];
+  items: { id: number; image: string; username?: string; title: string; content: string; subtitle?: string; date?: string; votes?: number; userVotes?: { [userId: string]: number }; comments?: { text: string; date: string }[] }[] = [];
   newTitle: string = '';
   newContent: string = '';
-  private storageKey = 'caleuche_posts_v1';
-  private userIdKey = 'caleuche_user_id';
+  private storageKey = 'caleuche_posts_v2';
+  private userIdKey = 'caleuche_user_id_v2';
   private userId: string = '';
+  private currentUserUsername: string = '';
+  private currentUserImage: string | null = null;
   commentsVisible: { [id: number]: boolean } = {};
   commentInput: { [id: number]: string } = {};
 
@@ -57,9 +61,21 @@ export class HomePage {
   constructor() {
     this.userId = this.getUserId();
     this.loadPosts();
-    if (!this.items || this.items.length === 0) {
-      this.generateItems();
-      this.savePosts();
+    this.loadCurrentUser();
+  }
+
+  /**
+   * Carga datos del usuario actual desde SqliteServices
+   */
+  private async loadCurrentUser() {
+    try {
+      const user = await this.authService.getCurrentUser();
+      if (user) {
+        this.currentUserUsername = user.username;
+        this.currentUserImage = user.image || null;
+      }
+    } catch (e) {
+      console.warn('home: could not load current user', e);
     }
   }
 
@@ -126,33 +142,19 @@ export class HomePage {
   }
 
   // -----------------------------
-  //  Generador de posts de ejemplo
-  // -----------------------------
-  generateItems(count: number = 20) {
-    const start = this.items.length + 1;
-    for (let i = start; i < start + count; i++) {
-      this.items.push({
-        id: i,
-        image: `https://picsum.photos/80/80?random=${i}`,
-        title: `Publicación ${i}`,
-        content: 'Contenido misterioso emergiendo del océano digital 🌊',
-        date: new Date().toISOString(),
-        votes: 0,
-        userVotes: {},
-        comments: []
-      });
-    }
-  }
-
-  // -----------------------------
-  //  Carga infinita
+  //  Carga infinita (cuando haya más posts)
   // -----------------------------
   loadData(event: any) {
-    setTimeout(() => {
-      this.generateItems(10);
-      this.savePosts();
+    // Si no hay posts reales, completa sin hacer nada
+    if (!this.items || this.items.length === 0) {
       event.target.complete();
-    }, 800);
+      return;
+    }
+    // Si hay posts, simular que se cargaron más (para scroll infinito)
+    // En producción: aquí iría un llamado a la API para traer más posts
+    setTimeout(() => {
+      event.target.complete();
+    }, 500);
   }
 
   // -----------------------------
@@ -166,7 +168,8 @@ export class HomePage {
     const id = (this.items.length ? Math.max(...this.items.map(p => p.id || 0)) : 0) + 1;
     const post = {
       id,
-      image: `https://picsum.photos/80/80?random=${id}`,
+      image: this.currentUserImage || 'https://via.placeholder.com/80?text=No+Image',
+      username: this.currentUserUsername || 'Anónimo',
       title,
       content,
       date: new Date().toISOString(),

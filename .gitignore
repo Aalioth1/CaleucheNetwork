@@ -30,6 +30,9 @@ log.txt
 /node_modules
 npm-debug.log
 yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
 
 .idea/
@@ -48,6 +51,23 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+# Signing/credentials (keep out of VCS)
+*.jks
+*.keystore
+*.pem
+*.p12
+*.key
+*.asc
+google-services.json
+**/signing.properties
+**/gradle.properties
+
+# Build artifacts (redundant with /build, kept explicit)
+app-release.apk
+app-release-unsigned.apk
+app-release.aab
+**/build/
 
 
 

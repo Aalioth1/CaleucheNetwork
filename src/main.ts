@@ -7,6 +7,8 @@
 
   import { provideLottieOptions } from 'ngx-lottie';
 
+  import { provideHttpClient } from '@angular/common/http';
+
   /**
   --------
   Player Lottie
@@ -34,6 +36,7 @@
         })
       ),
       provideLottieOptions({ player: playerFactory }),
+      provideHttpClient(),
     ],
   });
 
